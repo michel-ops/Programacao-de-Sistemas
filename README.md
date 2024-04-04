@@ -1,8 +1,8 @@
 **Projeto para a cadeira de programacao de sistemas**
 
-- MAQUINA VIRTUAL
-    /MV.cpp
+* MAQUINA VIRTUAL
+    */MV.cpp
 
-- MONTADOR
-    /Montador.cpp
-    /funcoes.cpp
+* MONTADOR
+    -Montador.cpp
+    -funcoes.cpp
