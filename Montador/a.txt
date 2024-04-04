@@ -1,0 +1,17 @@
+a
+b
+c
+
+STOP
+RW a
+PW b
+JLT a
+JGT c
+JEQ
+JMP
+SUB
+DIV
+MUL
+AA
+SA
+LA
