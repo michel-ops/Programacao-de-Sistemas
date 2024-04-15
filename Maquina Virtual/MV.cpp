@@ -70,11 +70,12 @@ void JLT(int *pc, int index, int A)
 
 void PW(int memoria[MAXMEM], int index)
 {
-    cout << "\n" << memoria[memoria[index]];
+    cout << "\nInterio: " << memoria[memoria[index]];
 }
 
 void RW(int memoria[MAXMEM], int index)
 {
+    cout << "\nDigite um inteiro: ";
     cin >> memoria[memoria[index]];
 }
 
@@ -83,130 +84,152 @@ void STOP(bool *stop)
     *stop = true;
 }
 
-void ler_arquivo_objeto()
+void ler_arquivo_objeto(int memoria[], int *inicio)
 {
-    vector<int> mem;
-
-    FILE  *f;
-    int    x, y;
-    char *nomeArq;
-
-    printf("\ndigite o nome do arquivo: ");
-    scanf("%s", nomeArq);
-
-
+    FILE *f;
+    int x, y, i;
+    bool erro=true;
+    char nomeArq[30];
+    
+    printf("digite o nome do arquivo\n") ;
+    scanf("%s", nomeArq) ;
     f = fopen (nomeArq, "r");
-    while (!feof(f)) 
-    {
-        fscanf (f, "%d %d", &x, &y) ;
-        mem.push_back(x);
-        mem.push_back(y);
-    }    
 
-    for (int i=0; i < mem.size(); i++)
+    fscanf (f, "%d", &x);
+    *inicio = x;
+    i = x;
+
+    while (!feof(f) && erro) 
     {
-        cout << "memori[" << i << "]: " << mem[i] << endl;
+        fscanf (f, "%d%d", &x, &y) ;
+        if(i > MAXMEM)
+        { 
+            erro = false;
+        }
+        else
+        {
+            memoria[i] = x;
+            i++;  
+            memoria[i] = y;
+            i++; 
+        }
     }
+
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-    int Memoria[MAXMEM]; 
-    int PC=0, Ac=0, Reg[2];
+    int Memoria[MAXMEM];
+
+    int PC=0, Ac=0;
     bool stop = false;
 
-    PC = 5;
-
-    while ( !stop && PC < MAXMEM)
+    ler_arquivo_objeto(Memoria, &PC);
+    
+    
+    while ( !stop && PC<MAXMEM)
     {
-        
-        PC++;
-
-        std::cout << "\n--------------------------------------------" << endl;
-        std::cout << "PC: " << PC  <<  endl;
-        std::cout << "Memoria["<< PC <<"]: " << Memoria[PC]  <<  endl;
-        std::cout << "Acumulador: " << Ac  <<  endl;
-        std::cout << "stop: " << stop  <<  endl;
-        
+        //printf("\nPc: %d, Memoria: %d", PC, Memoria[PC]);
+    
         switch ( Memoria[PC] )
         {
             case 0:
                 PC++;
                 LA(Memoria, &Ac, Memoria[PC]);
+                PC++;
                 break;
 
             case 1:
                 PC++;
                 SA(Memoria, Memoria[PC], &Ac);
+                PC++;
                 break;
 
             case 2:
                 PC++;
                 AA(Memoria, &Ac, PC);
+                PC++;
                 break;
 
             case 3:
                 PC++;
                 MUL(Memoria, &Ac, PC);
+                PC++;
                 break; 
 
             case 4:
                 PC++;
                 DIV(Memoria, &Ac, PC);
+                PC++;
                 break; 
 
             case 5:
                 PC++;
                 SUB(Memoria, &Ac, PC);
+                PC++;
                 break; 
             
             case 6:
                 PC++;
                 JMP(&PC, Memoria[PC]);
+                PC++;
                 break; 
 
             case 7:
                 PC++;
                 JEQ(&PC, Memoria[PC], Ac);
+                PC++;
                 break; 
 
             case 8:
                 PC++;
                 JGT(&PC, Memoria[PC], Ac);
+                PC++;
                 break; 
 
             case 9:
                 PC++;
                 JLT(&PC, Memoria[PC], Ac);
+                PC++;
                 break; 
 
             case 10:
                 PC++;
                 PW(Memoria, PC);
+                PC++;
                 break; 
 
             case 11:
                 PC++;
                 RW(Memoria, PC);
+                PC++;
                 break; 
 
             case 12:
+                PC++;
                 STOP(&stop);
+                PC++;
                 break;    
 
             default:
+                PC++;
                 STOP(&stop);
+                PC++;
                 break;
         }
     }
+    
 
-    std::cout << "\n" << "Memoria salva" << "\n";
-    for (int i = 0; i < 128; i++)
+    
+    std::cout << "\n\n\n" << "      MEMORIA SALVA       " << "\n";
+    //std::cout << "Inicio: " << inicio << endl;
+    for(int i=0; i<128; i++)
     {
-        std::cout << Memoria[i] <<  endl;
+        if( (i+1)%10 == 0) printf("\n");  
+        std::cout << Memoria[i] << ", ";
     }
     
-    
+
     return 0;
 }
 

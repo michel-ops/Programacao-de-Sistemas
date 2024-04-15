@@ -55,7 +55,7 @@ vector<string> ler_linha_do_arquivo()
 
     if(!arquivo.is_open( ))
     {
-        cout <<  "\nNão foi possível abrir arquivo! Programa será terminado!";
+        cout <<  "\nNao foi possivel abrir arquivo! Programa sera terminado!";
         arquivo.clear( );
         arquivo.close(); 
     } 
